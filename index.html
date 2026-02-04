@@ -500,11 +500,10 @@
                 const diffTime = (date2.getTime() - date1.getTime());
                 return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
             },
-            getAge(birthDate) {
-                const today = new Date();
-                let age = today.getFullYear() - birthDate.getFullYear();
-                const m = today.getMonth() - birthDate.getMonth();
-                if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) age--;
+            getAge(birthDate, referenceDate = new Date()) {
+                let age = referenceDate.getFullYear() - birthDate.getFullYear();
+                const m = referenceDate.getMonth() - birthDate.getMonth();
+                if (m < 0 || (m === 0 && referenceDate.getDate() < birthDate.getDate())) age--;
                 return age;
             }
         };
@@ -738,7 +737,7 @@
             UI.showResult('workHourResult', status, html);
         }
 
-        // 4. Parental Leave
+        // 4. Parental Leave (변경됨: 시작일 기준 나이 계산)
         function calculateParentalLeave() {
             const birthVal = $("childBirthDate").value;
             const startVal = $("parentalLeaveStart").value;
@@ -751,10 +750,11 @@
 
             const birthDate = new Date(birthVal);
             const startDate = new Date(startVal);
-            const age = DateUtils.getAge(birthDate);
+            // 자녀 나이 계산 기준을 '휴직 시작일'로 변경
+            const ageAtStart = DateUtils.getAge(birthDate, startDate);
 
-            if (age > 8) {
-                UI.showResult('parentalResult', 'error', `<div class="message">❌ 자녀가 만 ${age}세예요. 육아휴직은 만 8세(또는 초등 2학년) 이하일 때만 가능해요.</div>`);
+            if (ageAtStart > 8) {
+                UI.showResult('parentalResult', 'error', `<div class="message">❌ 희망 시작일(${DateUtils.format(startDate)}) 기준 자녀가 만 ${ageAtStart}세가 됩니다. 육아휴직은 시작일 기준 만 8세(또는 초등 2학년) 이하일 때만 신청 가능해요.</div>`);
                 return;
             }
 
@@ -763,7 +763,7 @@
             endDate.setDate(endDate.getDate() - 1);
 
             const html = `
-                <div class="result-item"><span class="result-label">자녀 나이</span><span class="result-value">만 ${age}세</span></div>
+                <div class="result-item"><span class="result-label">자녀 나이 (시작일 기준)</span><span class="result-value">만 ${ageAtStart}세</span></div>
                 <div class="result-item"><span class="result-label">사용 기간</span><span class="result-value">${months}개월</span></div>
                 <div class="result-item"><span class="result-label">휴직 종료일</span><span class="result-value">${DateUtils.format(endDate)}</span></div>
                 <div class="result-item"><span class="result-label">복귀 예정일</span><span class="result-value">${DateUtils.format(DateUtils.addDays(endDate, 1))}</span></div>
@@ -797,7 +797,7 @@
             UI.showResult('parentalWorkResult', 'success', html);
         }
 
-        // 6. Smart Protection Timeline
+        // 6. Smart Protection Timeline (변경됨: referenceDate 파라미터 적용)
         function generateSmartTimeline() {
             const dueVal = $("smartDueDate").value;
             if (!dueVal) {
@@ -817,7 +817,7 @@
 
             let currentStatus = isAfterBirth ? "🌻 지금은 든든한 육아기예요!" : "🌱 지금은 소중한 임신기예요!";
             let currentDesc = isAfterBirth 
-                ? `우리 아이가 태어난 지 벌써 <strong>만 ${DateUtils.getAge(dueDate)}세</strong>가 되었네요. 사용할 수 있는 육아기 제도들을 확인해 볼까요?`
+                ? `우리 아이가 태어난 지 벌써 <strong>만 ${DateUtils.getAge(dueDate, today)}세</strong>가 되었네요. 사용할 수 있는 육아기 제도들을 확인해 볼까요?`
                 : `출산 예정일까지 <strong>약 ${DateUtils.diffDays(today, dueDate)}일</strong> 남았어요. 건강 관리에 유의하며 아래 제도들을 활용해 보세요!`;
 
             const summaryHtml = `
