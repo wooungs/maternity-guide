@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>슈퍼센트 모성보호 가이드</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <style>
+        :root {
+            --gradient-main: linear-gradient(135deg, #e8f4fc 0%, #f8e8f4 25%, #f0e6fa 50%, #fef6e8 75%, #e8f4fc 100%);
+            --gradient-pink: linear-gradient(135deg, #ff9eb5 0%, #ffb8d0 50%, #ffd0e0 100%);
+            --gradient-blue: linear-gradient(135deg, #7ec8e8 0%, #a8d8f0 50%, #c8e8f8 100%);
+            --gradient-purple: linear-gradient(135deg, #c8a8e8 0%, #d8c0f0 50%, #e8d8f8 100%);
+            --gradient-yellow: linear-gradient(135deg, #ffe8a0 0%, #fff0c0 50%, #fff8e0 100%);
+            --glass-bg: rgba(255, 255, 255, 0.25);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --glass-shadow: 0 8px 32px rgba(100, 100, 140, 0.15);
+            --text-primary: #2d3748;
+            --text-secondary: #5a6779;
+            --focus-ring: rgba(200, 168, 232, 0.6);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            background: var(--gradient-main);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            overflow-x: hidden;
+            color: var(--text-primary);
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .bg-decoration {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .bg-deco-1 { width: 400px; height: 400px; background: linear-gradient(135deg, #ffb8d0, #ffd0e0); top: -100px; right: -100px; animation: float1 20s ease-in-out infinite; }
+        .bg-deco-2 { width: 300px; height: 300px; background: linear-gradient(135deg, #a8d8f0, #c8e8f8); bottom: -50px; left: -50px; animation: float2 25s ease-in-out infinite; }
+        .bg-deco-3 { width: 250px; height: 250px; background: linear-gradient(135deg, #d8c0f0, #e8d8f8); top: 40%; left: 20%; animation: float3 18s ease-in-out infinite; }
+        .bg-deco-4 { width: 200px; height: 200px; background: linear-gradient(135deg, #fff0c0, #fff8e0); bottom: 30%; right: 15%; animation: float1 22s ease-in-out infinite reverse; }
+        
+        @keyframes float1 { 0%, 100% { transform: translate(0, 0) rotate(0deg); } 33% { transform: translate(30px, -30px) rotate(5deg); } 66% { transform: translate(-20px, 20px) rotate(-5deg); } }
+        @keyframes float2 { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(40px, -40px) scale(1.1); } }
+        @keyframes float3 { 0%, 100% { transform: translate(0, 0); } 25% { transform: translate(-30px, 30px); } 75% { transform: translate(30px, -30px); } }
+        
+        .page { display: none; min-height: 100vh; position: relative; z-index: 1; }
+        .page.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .landing-page { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 40px 20px; }
+        .landing-header { text-align: center; margin-bottom: 60px; width: 100%; }
+        .landing-logo { font-size: 1em; font-weight: 600; color: var(--text-secondary); letter-spacing: 2px; margin-bottom: 24px; opacity: 0.8; }
+        .landing-title { font-size: clamp(2.5em, 6vw, 4em); font-weight: 800; background: linear-gradient(135deg, #7ec8e8 0%, #c8a8e8 50%, #ff9eb5 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 28px; line-height: 1.3; letter-spacing: -1px; }
+        .landing-subtitle { font-size: clamp(1em, 2.5vw, 1.3em); color: var(--text-secondary); font-weight: 400; line-height: 1.8; max-width: 900px; margin: 0 auto; white-space: nowrap; }
+        .landing-subtitle .highlight { color: #d899b8; font-weight: 600; }
+        
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; max-width: 1200px; width: 100%; padding: 0 20px; }
+        .menu-card { background: rgba(255, 255, 255, 0.85); border-radius: 28px; padding: 32px 28px 100px; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(100, 100, 140, 0.08); min-height: 240px; border: none; text-align: left; font-family: inherit; width: 100%; }
+        .menu-card:hover, .menu-card:focus { transform: translateY(-8px); box-shadow: 0 16px 40px rgba(100, 100, 140, 0.15); outline: none; }
+        .menu-card:focus-visible { box-shadow: 0 0 0 4px var(--focus-ring); }
+        .menu-card-badge { display: inline-block; padding: 12px 28px; border-radius: 50px; font-size: 1.05em; font-weight: 700; color: white; margin-bottom: 24px; }
+        .menu-card.pink .menu-card-badge { background: linear-gradient(135deg, #c8a8e8 0%, #b090d8 100%); }
+        .menu-card.blue .menu-card-badge { background: linear-gradient(135deg, #7ec8e8 0%, #60b8e0 100%); }
+        .menu-card.purple .menu-card-badge { background: linear-gradient(135deg, #a890d8 0%, #9080c8 100%); }
+        .menu-card.yellow .menu-card-badge { background: linear-gradient(135deg, #e8c078 0%, #d8a858 100%); }
+        .menu-card-desc { font-size: 1.05em; color: var(--text-secondary); line-height: 1.8; }
+        .menu-card-desc .highlight { color: #9070c0; font-weight: 700; }
+        .menu-icon { position: absolute; bottom: 20px; right: 24px; font-size: 3.5em; opacity: 0.9; pointer-events: none; }
+        
+        .calculator-page { padding: 40px 20px; max-width: 800px; margin: 0 auto; }
+        .back-button { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 50px; color: var(--text-secondary); font-size: 0.95em; font-weight: 500; cursor: pointer; transition: all 0.3s ease; margin-bottom: 32px; }
+        .back-button:hover, .back-button:focus { background: rgba(255, 255, 255, 0.4); transform: translateX(-5px); outline: none; }
+        .back-button:focus-visible { box-shadow: 0 0 0 3px var(--focus-ring); }
+        
+        .calc-header { text-align: center; margin-bottom: 40px; }
+        .calc-icon { width: 80px; height: 80px; border-radius: 24px; display: flex; align-items: center; justify-content: center; font-size: 2.5em; margin: 0 auto 20px; background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); }
+        .calc-title { font-size: 2em; font-weight: 700; color: var(--text-primary); margin-bottom: 12px; }
+        .calc-subtitle-small { font-size: 0.95em; color: var(--text-secondary); line-height: 1.6; display: block; margin-bottom: 20px; }
+
+        .info-box {
+            margin-bottom: 32px;
+            padding: 24px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+        .info-box-title {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .info-item:last-child { border-bottom: none; }
+        .info-label { color: var(--text-secondary); font-weight: 600; font-size: 0.95em; }
+        .info-value { color: var(--text-primary); font-size: 0.95em; font-weight: 500; text-align: right; }
+        .info-value strong { color: #ff6b81; font-weight: 700; }
+        
+        .glass-card { background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 28px; padding: 36px; box-shadow: var(--glass-shadow); position: relative; overflow: hidden; margin-bottom: 40px; }
+        .glass-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--card-gradient); }
+        .glass-card.pink { --card-gradient: var(--gradient-pink); }
+        .glass-card.blue { --card-gradient: var(--gradient-blue); }
+        .glass-card.purple { --card-gradient: var(--gradient-purple); }
+        .glass-card.yellow { --card-gradient: var(--gradient-yellow); }
+        
+        .form-group { margin-bottom: 24px; }
+        .form-group label { display: block; font-size: 0.95em; font-weight: 600; color: var(--text-secondary); margin-bottom: 10px; }
+        .form-group input, .form-group select { width: 100%; padding: 16px 20px; background: rgba(255, 255, 255, 0.5); border: 2px solid rgba(255, 255, 255, 0.4); border-radius: 16px; font-size: 1em; font-weight: 500; color: var(--text-primary); transition: all 0.3s ease; font-family: inherit; }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--focus-ring); background: rgba(255, 255, 255, 0.7); box-shadow: 0 0 0 4px rgba(200, 168, 232, 0.15); }
+        
+        .btn-calculate { width: 100%; padding: 18px; background: linear-gradient(135deg, #7ec8e8 0%, #c8a8e8 50%, #ff9eb5 100%); background-size: 200% 200%; color: white; border: none; border-radius: 16px; font-size: 1.1em; font-weight: 700; cursor: pointer; transition: all 0.4s ease; box-shadow: 0 8px 24px rgba(200, 168, 232, 0.3); font-family: inherit; }
+        .btn-calculate:hover, .btn-calculate:focus { background-position: 100% 50%; transform: translateY(-3px); box-shadow: 0 12px 32px rgba(200, 168, 232, 0.4); outline: none; }
+        
+        .btn-copy { margin-top: 16px; padding: 12px 20px; background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(255, 255, 255, 0.8); border-radius: 12px; font-size: 0.9em; font-weight: 600; color: var(--text-secondary); cursor: pointer; transition: all 0.3s ease; }
+        .btn-copy:hover { background: rgba(255, 255, 255, 0.8); color: var(--text-primary); }
+        
+        .result-box { margin-top: 28px; padding: 28px; background: rgba(255, 255, 255, 0.5); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.5); display: none; }
+        .result-box.show { display: block; animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .result-box.success { background: linear-gradient(135deg, rgba(220, 240, 220, 0.6) 0%, rgba(200, 230, 200, 0.5) 100%); border-color: rgba(150, 210, 150, 0.5); }
+        .result-box.warning { background: linear-gradient(135deg, rgba(255, 245, 225, 0.7) 0%, rgba(255, 235, 210, 0.6) 100%); border-color: rgba(230, 200, 150, 0.5); }
+        .result-box.error { background: linear-gradient(135deg, rgba(255, 235, 235, 0.7) 0%, rgba(255, 225, 225, 0.6) 100%); border-color: rgba(230, 150, 150, 0.5); }
+        
+        @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .result-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px dashed rgba(0, 0, 0, 0.08); }
+        .result-item:last-of-type { border-bottom: none; }
+        .result-label { color: var(--text-secondary); font-weight: 600; font-size: 0.95em; }
+        .result-value { color: var(--text-primary); font-weight: 700; font-size: 1.05em; }
+        
+        .message { margin-top: 20px; padding: 16px; background: rgba(255, 255, 255, 0.6); border-radius: 16px; font-size: 0.95em; line-height: 1.8; color: var(--text-secondary); border: 1px solid rgba(255, 255, 255, 0.8); }
+        
+        .week-status-banner {
+            margin-top: 20px;
+            padding: 20px 24px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            animation: fadeIn 0.6s ease;
+        }
+        .week-status-text {
+            font-size: 1.1em;
+            color: var(--text-primary);
+            font-weight: 500;
+            line-height: 1.5;
+        }
+        .week-status-text strong {
+            color: #5a9cf0;
+            font-weight: 800;
+            font-size: 1.2em;
+            background: linear-gradient(to bottom, transparent 60%, rgba(90, 156, 240, 0.15) 40%);
+        }
+
+        .checkup-summary-box {
+            background: rgba(255, 255, 255, 0.6);
+            padding: 16px;
+            border-radius: 16px;
+            margin-top: 24px;
+            margin-bottom: 24px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+        .summary-text { font-size: 1.1em; color: var(--text-primary); }
+        .summary-text strong { color: #5a9cf0; font-weight: 800; }
+        
+        .checkup-group { margin-bottom: 24px; }
+        .group-header { margin-bottom: 12px; padding-left: 8px; border-left: 4px solid #7ec8e8; }
+        .group-title { display: block; font-weight: 800; color: var(--text-primary); font-size: 1.05em; margin-bottom: 2px; }
+        .group-desc { font-size: 0.85em; color: var(--text-secondary); }
+        
+        .schedule-item-new {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 16px;
+            margin-bottom: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            transition: all 0.2s ease;
+        }
+        .schedule-item-new:hover { background: rgba(255, 255, 255, 0.6); transform: translateX(4px); }
+        .check-icon { font-size: 1em; margin-top: 2px; }
+        .date-range { display: block; font-weight: 700; color: var(--text-primary); font-size: 1.05em; margin-bottom: 4px; }
+        .week-desc { font-size: 0.85em; color: var(--text-secondary); }
+
+        .timeline-step-container { margin-top: 32px; display: none; flex-direction: column; gap: 24px; }
+        .timeline-step-container.show { display: flex; animation: slideUp 0.4s ease; }
+        .timeline-step { position: relative; padding-left: 45px; padding-bottom: 10px; border-left: 2px dashed rgba(0, 0, 0, 0.1); }
+        .timeline-step:last-child { border-left-color: transparent; }
+        .timeline-dot { position: absolute; left: -11px; top: 0; width: 20px; height: 20px; border-radius: 50%; background: #fff; border: 4px solid #cbd5e0; box-shadow: 0 0 10px rgba(0,0,0,0.05); transition: all 0.3s ease; }
+        
+        .timeline-content { 
+            background: rgba(255, 255, 255, 0.5); 
+            padding: 20px 24px; 
+            border-radius: 24px; 
+            border: 1px solid rgba(255, 255, 255, 0.8); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-start;
+            gap: 16px;
+            transition: all 0.3s ease;
+        }
+        .timeline-info { flex: 1; }
+        .timeline-step-title { font-weight: 700; color: var(--text-primary); margin-bottom: 6px; font-size: 1.05em; display: flex; align-items: center; gap: 8px; }
+        .timeline-step-date { font-size: 0.85em; color: var(--text-secondary); margin-bottom: 10px; font-weight: 500; }
+        .timeline-step-desc { font-size: 0.9em; color: var(--text-secondary); line-height: 1.6; }
+        
+        .timeline-step.active { border-left: 2px solid var(--dot-color); }
+        .timeline-step.active .timeline-dot { 
+            border-color: var(--dot-color); 
+            transform: scale(1.3); 
+            background: var(--dot-color);
+            animation: pulse 2s infinite; 
+        }
+        .timeline-step.active .timeline-content { 
+            background: #ffffff; 
+            border: 2px solid var(--dot-color); 
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+            transform: translateX(5px);
+        }
+        .timeline-step.active .timeline-step-title { color: var(--dot-color); }
+        
+        .shortcut-btn {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 8px 14px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 700;
+            color: var(--text-secondary);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .shortcut-btn:hover {
+            background: rgba(255, 255, 255, 0.8);
+            transform: translateY(-2px);
+            color: var(--text-primary);
+        }
+        .timeline-step.active .shortcut-btn {
+            background: var(--dot-color);
+            color: white;
+            border: none;
+        }
+
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(126, 200, 232, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(126, 200, 232, 0); } 100% { box-shadow: 0 0 0 0 rgba(126, 200, 232, 0); } }
+
+        .landing-footer { margin-top: 60px; text-align: center; color: var(--text-secondary); font-size: 0.9em; opacity: 0.7; padding-bottom: 40px; line-height: 1.6; }
+        .version-badge { display: inline-block; margin-top: 10px; padding: 4px 12px; background: rgba(0, 0, 0, 0.05); border-radius: 50px; font-size: 0.8em; font-weight: 600; }
+
+        @media (max-width: 1024px) {
+            .landing-subtitle { white-space: normal; }
+        }
+        @media (max-width: 768px) {
+            .landing-title { font-size: 2.2em; }
+            .menu-grid { grid-template-columns: 1fr; }
+            .glass-card { padding: 24px 20px; }
+            .timeline-content { flex-direction: column; }
+            .shortcut-btn { align-self: flex-end; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-decoration bg-deco-1" aria-hidden="true"></div>
+    <div class="bg-decoration bg-deco-2" aria-hidden="true"></div>
+    <div class="bg-decoration bg-deco-3" aria-hidden="true"></div>
+    <div class="bg-decoration bg-deco-4" aria-hidden="true"></div>
+
+    <main id="landing" class="page active">
+        <div class="landing-page">
+            <header class="landing-header">
+                <div class="landing-logo">SUPERCENT</div>
+                <h1 class="landing-title">모성보호 가이드</h1>
+                <p class="landing-subtitle">
+                    새로운 생명과 함께하실 앞으로의 날들을 <span class="highlight">슈퍼센트가 진심을 다해 도와드릴게요</span> 💕
+                </p>
+            </header>
+            
+            <nav class="menu-grid">
+                <button class="menu-card pink" data-page="maternity" aria-label="출산전후휴가 계산기 이동">
+                    <span class="menu-card-badge">출산전후휴가</span>
+                    <p class="menu-card-desc">출산 예정일에 맞춰 <span class="highlight">휴가 시작일</span>과<br><span class="highlight">복귀일</span>을 계산해 드려요!</p>
+                    <div class="menu-icon">🤰</div>
+                </button>
+                
+                <button class="menu-card blue" data-page="checkup" aria-label="태아검진휴가 일정 확인 이동">
+                    <span class="menu-card-badge">태아검진휴가</span>
+                    <p class="menu-card-desc">임신 주차별 <span class="highlight">검진 주기</span>와<br><span class="highlight">남은 휴가 일수</span>를 확인하세요!</p>
+                    <div class="menu-icon">🏥</div>
+                </button>
+                
+                <button class="menu-card purple" data-page="workhour" aria-label="임신기 근로시간 단축 확인 이동">
+                    <span class="menu-card-badge">임신기 근로시간 단축</span>
+                    <p class="menu-card-desc">임신 중 <span class="highlight">근로시간 단축</span> 대상 여부,<br>함께 <span class="highlight">확인해보세요!</span></p>
+                    <div class="menu-icon">⏰</div>
+                </button>
+                
+                <button class="menu-card yellow" data-page="parental" aria-label="육아휴직 계산기 이동">
+                    <span class="menu-card-badge">육아휴직</span>
+                    <p class="menu-card-desc">육아휴직을 <span class="highlight">희망하실 경우</span>,<br>사용 가능한 <span class="highlight">일정을 확인해보세요!</span></p>
+                    <div class="menu-icon">👶</div>
+                </button>
+                
+                <button class="menu-card pink" data-page="parentalwork" aria-label="육아기 근로시간 단축 확인 이동">
+                    <span class="menu-card-badge">육아기 근로시간 단축</span>
+                    <p class="menu-card-desc">육아기 <span class="highlight">근로시간 단축</span> 사용 가능 여부,<br><span class="highlight">확인해보세요!</span></p>
+                    <div class="menu-icon">🕐</div>
+                </button>
+                
+                <button class="menu-card blue" data-page="timeline" aria-label="모성보호 한눈에 확인하기 이동">
+                    <span class="menu-card-badge">모성보호 한눈에 확인하기</span>
+                    <p class="menu-card-desc">내 <span class="highlight">일정에 맞춰</span> 신청가능한<br><span class="highlight">제도들을 확인해보세요!</span></p>
+                    <div class="menu-icon">📅</div>
+                </button>
+            </nav>
+            
+            <footer class="landing-footer">
+                이외에 추가적인 문의사항이 있으시다면 편하게 HR팀으로 문의주세요!<br>
+                슈퍼센트가 언제나 함께합니다 🌸<br>
+                <div class="version-badge">ver. 202601</div>
+            </footer>
+        </div>
+    </main>
+
+    <section id="maternity" class="page">
+        <div class="calculator-page">
+            <button class="back-button" data-page="landing">← 돌아가기</button>
+            <div class="calc-header">
+                <div class="calc-icon">🤰</div>
+                <h2 class="calc-title">출산전후휴가</h2>
+                <p class="calc-subtitle-small">출산 예정일과 희망 시작일을 입력하시면 휴가 일정을 계산해 드릴게요!</p>
+            </div>
+            <div class="info-box">
+                <h3 class="info-box-title">📋 출산전후휴가 기준</h3>
+                <div class="info-item"><span class="info-label">단태아</span><span class="info-value">총 90일 (출산 후 <strong>45일 이상</strong> 필수)</span></div>
+                <div class="info-item"><span class="info-label">다태아</span><span class="info-value">총 120일 (출산 후 <strong>60일 이상</strong> 필수)</span></div>
+            </div>
+            <div class="glass-card pink">
+                <div class="form-group"><label for="maternityDueDate">출산 예정일</label><input type="date" id="maternityDueDate" required></div>
+                <div class="form-group"><label for="maternityStartDate">희망 시작일</label><input type="date" id="maternityStartDate" required></div>
+                <div class="form-group"><label for="birthType">출산 형태</label><select id="birthType"><option value="single">단태아</option><option value="multiple">다태아 (쌍둥이 이상)</option></select></div>
+                <button class="btn-calculate" id="btnCalculateMaternity">계산하기</button>
+                <div id="maternityResult" class="result-box" aria-live="polite"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="checkup" class="page">
+        <div class="calculator-page">
+            <button class="back-button" data-page="landing">← 돌아가기</button>
+            <div class="calc-header">
+                <div class="calc-icon">🏥</div>
+                <h2 class="calc-title">태아검진휴가</h2>
+                <p class="calc-subtitle-small">임신 주차별 검진 주기와 남은 휴가 일수를 확인하세요!</p>
+            </div>
+            <div class="info-box">
+                <h3 class="info-box-title">📋 태아검진휴가 주기</h3>
+                <div class="info-item"><span class="info-label">~28주</span><span class="info-value">4주마다 1회</span></div>
+                <div class="info-item"><span class="info-label">29주~36주</span><span class="info-value">2주마다 1회</span></div>
+                <div class="info-item"><span class="info-label">37주~</span><span class="info-value">1주마다 1회</span></div>
+            </div>
+            <div class="glass-card blue">
+                <div class="form-group"><label for="checkupDueDate">출산 예정일</label><input type="date" id="checkupDueDate" required></div>
+                <div class="form-group"><label for="lastCheckupDate">최근 검진 사용일 (선택)</label><input type="date" id="lastCheckupDate"></div>
+                <button class="btn-calculate" id="btnCalculateCheckup">일정 계산하기</button>
+                <div id="checkupResult" class="week-status-container" aria-live="polite"></div>
+                <div id="checkupSchedule" class="schedule-container" style="margin-top:24px;"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="workhour" class="page">
+        <div class="calculator-page">
+            <button class="back-button" data-page="landing">← 돌아가기</button>
+            <div class="calc-header">
+                <div class="calc-icon">⏰</div>
+                <h2 class="calc-title">임신기 근로시간 단축</h2>
+                <p class="calc-subtitle-small">임신 중 근로시간 단축 대상 여부와 사용 가능한 기간을 확인해보세요!</p>
+            </div>
+            <div class="glass-card purple">
+                <div class="form-group"><label for="workHourDueDate">출산 예정일</label><input type="date" id="workHourDueDate" required></div>
+                <div class="form-group"><label for="highRisk">고위험 임산부 여부</label><select id="highRisk"><option value="no">아니요</option><option value="yes">예 (진단서 보유)</option></select></div>
+                <button class="btn-calculate" id="btnCalculateWorkHour">사용 가능 기간 확인</button>
+                <div id="workHourResult" class="result-box" aria-live="polite"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="parental" class="page">
+        <div class="calculator-page">
+            <button class="back-button" data-page="landing">← 돌아가기</button>
+            <div class="calc-header">
+                <div class="calc-icon">👶</div>
+                <h2 class="calc-title">육아휴직</h2>
+                <p class="calc-subtitle-small">육아휴직 기간과 부모육아휴직 혜택을 안내해 드려요!</p>
+            </div>
+            <div class="glass-card yellow">
+                <div class="form-group"><label for="childBirthDate">자녀 생년월일</label><input type="date" id="childBirthDate" required></div>
+                <div class="form-group"><label for="parentalLeaveStart">희망 시작일</label><input type="date" id="parentalLeaveStart" required></div>
+                <div class="form-group"><label for="parentalLeaveDuration">사용 기간 (개월)</label><input type="number" id="parentalLeaveDuration" value="12" min="1" max="12"></div>
+                <button class="btn-calculate" id="btnCalculateParental">계산하기</button>
+                <div id="parentalResult" class="result-box" aria-live="polite"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="parentalwork" class="page">
+        <div class="calculator-page">
+            <button class="back-button" data-page="landing">← 돌아가기</button>
+            <div class="calc-header">
+                <div class="calc-icon">🕐</div>
+                <h2 class="calc-title">육아기 근로시간 단축</h2>
+                <p class="calc-subtitle-small">육아기 근로시간 단축 사용 가능 여부, 확인해보세요!</p>
+            </div>
+            <div class="glass-card pink">
+                <div class="form-group"><label for="childAge">자녀 나이 (만)</label><input type="number" id="childAge" min="0" max="12" placeholder="0~12"></div>
+                <div class="form-group"><label for="usedParentalMonths">이미 사용한 육아휴직 기간 (개월)</label><input type="number" id="usedParentalMonths" value="0" min="0" max="12"></div>
+                <button class="btn-calculate" id="btnCalculateParentalWork">가능 여부 확인</button>
+                <div id="parentalWorkResult" class="result-box" aria-live="polite"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="timeline" class="page">
+        <div class="calculator-page">
+            <button class="back-button" data-page="landing">← 돌아가기</button>
+            <div class="calc-header">
+                <div class="calc-icon">📅</div>
+                <h2 class="calc-title">모성보호 한눈에 확인하기</h2>
+                <p class="calc-subtitle-small">내 일정에 맞춰 신청가능한 제도들을 확인해보세요!</p>
+            </div>
+            <div class="glass-card blue">
+                <div class="form-group"><label for="smartDueDate">자녀의 출산(예정)일</label><input type="date" id="smartDueDate" required></div>
+                <button class="btn-calculate" id="btnGenerateSmartTimeline">타임라인 확인하기</button>
+                
+                <div id="smartTimelineResult" class="result-box" aria-live="polite"></div>
+                <div id="smartTimelineContainer" class="timeline-step-container"></div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // --- Utilities ---
+        const $ = (id) => document.getElementById(id);
+
+        const DateUtils = {
+            format(date) {
+                if (!date || isNaN(date.getTime())) return "-";
+                return `${date.getFullYear()}년 ${String(date.getMonth() + 1).padStart(2, '0')}월 ${String(date.getDate()).padStart(2, '0')}일`;
+            },
+            formatCompact(date) {
+                if (!date || isNaN(date.getTime())) return "-";
+                return `${String(date.getMonth() + 1).padStart(2, '0')}월 ${String(date.getDate()).padStart(2, '0')}일`;
+            },
+            addDays(date, days) {
+                const result = new Date(date);
+                result.setDate(result.getDate() + days);
+                return result;
+            },
+            addYears(date, years) {
+                const result = new Date(date);
+                result.setFullYear(result.getFullYear() + years);
+                return result;
+            },
+            diffDays(d1, d2) {
+                const date1 = new Date(d1.getFullYear(), d1.getMonth(), d1.getDate());
+                const date2 = new Date(d2.getFullYear(), d2.getMonth(), d2.getDate());
+                const diffTime = (date2.getTime() - date1.getTime());
+                return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            },
+            getAge(birthDate) {
+                const today = new Date();
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const m = today.getMonth() - birthDate.getMonth();
+                if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) age--;
+                return age;
+            }
+        };
+
+        const UI = {
+            showResult(boxId, status, html) {
+                const box = $(boxId);
+                if (box) {
+                    box.className = `result-box ${status} show`;
+                    box.innerHTML = html;
+                }
+            },
+            hideResults() {
+                document.querySelectorAll('.result-box').forEach(el => el.classList.remove('show'));
+                document.querySelectorAll('.schedule-container, .timeline-step-container, .week-status-container').forEach(el => {
+                    el.classList.remove('show');
+                    el.innerHTML = '';
+                });
+            }
+        };
+
+        // --- Page Navigation ---
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const target = $(pageId);
+            if (target) {
+                target.classList.add('active');
+                window.scrollTo(0, 0);
+                const firstBtn = target.querySelector('.back-button');
+                if (firstBtn) firstBtn.focus();
+            }
+        }
+
+        // --- Calculation Logic ---
+
+        // 1. Maternity Leave
+        function calculateMaternityLeave() {
+            const dueVal = $("maternityDueDate").value;
+            const startVal = $("maternityStartDate").value;
+            const type = $("birthType").value;
+
+            if (!dueVal || !startVal) {
+                UI.showResult('maternityResult', 'error', '<div class="message">📝 출산 예정일과 휴가 시작일을 모두 입력해 주세요.</div>');
+                return;
+            }
+
+            const dueDate = new Date(dueVal);
+            const startDate = new Date(startVal);
+            const totalDays = (type === 'multiple') ? 120 : 90;
+            const minPostDays = (type === 'multiple') ? 60 : 45;
+
+            const endDate = DateUtils.addDays(startDate, totalDays - 1);
+            const returnDate = DateUtils.addDays(endDate, 1);
+
+            const postDays = DateUtils.diffDays(dueDate, endDate) + 1; 
+            const preDays = totalDays - postDays;
+
+            let status = 'success';
+            let msg = '✅ 법적 기준(출산 후 45일 이상 확보)에 적합한 일정이에요!';
+
+            if (postDays < minPostDays) {
+                status = 'error';
+                const recommendedStart = DateUtils.addDays(dueDate, -(totalDays - minPostDays));
+                msg = `❌ 출산 후 휴가 기간이 조금 부족해요 (최소 ${minPostDays}일 확보 필수).<br>늦어도 <strong>${DateUtils.format(recommendedStart)}</strong>에는 휴가를 시작하셔야 해요.`;
+            } else if (startDate > dueDate) {
+                status = 'warning';
+                msg = '⚠️ 휴가 시작일이 출산 예정일보다 늦어요. 출산 전 건강 관리에 꼭 유의하세요!';
+            }
+
+            const startFormatted = DateUtils.format(startDate);
+            const endFormatted = DateUtils.format(endDate);
+            const returnFormatted = DateUtils.format(returnDate);
+
+            const html = `
+                <div class="result-item"><span class="result-label">총 휴가 기간</span><span class="result-value">${totalDays}일</span></div>
+                <div class="result-item"><span class="result-label">출산 전 / 후</span><span class="result-value">${preDays}일 / ${postDays}일</span></div>
+                <div class="result-item"><span class="result-label">휴가 종료일</span><span class="result-value">${endFormatted}</span></div>
+                <div class="result-item"><span class="result-label">복귀 예정일</span><span class="result-value">${returnFormatted}</span></div>
+                <div class="message">${msg}</div>
+                <button class="btn-copy" onclick="navigator.clipboard.writeText('출산휴가 계획: ${startFormatted} ~ ${endFormatted} (복귀: ${returnFormatted})').then(()=>alert('클립보드에 복사되었어요!'))">결과 복사하기</button>
+            `;
+            UI.showResult('maternityResult', status, html);
+        }
+
+        // 2. Checkup Leave
+        function calculateCheckupLeave() {
+            const dueVal = $("checkupDueDate").value;
+            const lastVal = $("lastCheckupDate").value;
+
+            if (!dueVal) {
+                const resBox = $("checkupResult");
+                if(resBox) resBox.innerHTML = '<div class="message" style="color:#e53e3e">📝 출산 예정일을 입력해 주세요.</div>';
+                return;
+            }
+
+            const dueDate = new Date(dueVal);
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            const lastCheckupDate = lastVal ? new Date(lastVal) : null;
+            if (lastCheckupDate) lastCheckupDate.setHours(0,0,0,0);
+
+            const pregStartDate = DateUtils.addDays(dueDate, -280);
+            const diffDays = DateUtils.diffDays(pregStartDate, today);
+            const currentWeek = Math.floor(diffDays / 7) + 1;
+
+            if (currentWeek > 42) {
+                const resBox = $("checkupResult");
+                if(resBox) resBox.innerHTML = '<div class="message" style="color:#e53e3e">❌ 이미 출산 주기를 초과한 것 같아요. 날짜를 다시 확인해 주세요!</div>';
+                return;
+            }
+
+            const windows = [
+                { sW: 1, eW: 4, label: '1구간' }, { sW: 5, eW: 8, label: '1구간' }, { sW: 9, eW: 12, label: '1구간' },
+                { sW: 13, eW: 16, label: '1구간' }, { sW: 17, eW: 20, label: '1구간' }, { sW: 21, eW: 24, label: '1구간' },
+                { sW: 25, eW: 28, label: '1구간' },
+                { sW: 29, eW: 30, label: '2구간' }, { sW: 31, eW: 32, label: '2구간' }, { sW: 33, eW: 34, label: '2구간' },
+                { sW: 35, eW: 36, label: '2구간' },
+                { sW: 37, eW: 37, label: '3구간' }, { sW: 38, eW: 38, label: '3구간' }, { sW: 39, eW: 39, label: '3구간' },
+                { sW: 40, eW: 40, label: '3구간' }
+            ];
+
+            const filterBaseDate = lastCheckupDate || today;
+            const futureCheckups = windows.map(win => {
+                const start = DateUtils.addDays(pregStartDate, (win.sW - 1) * 7);
+                const end = DateUtils.addDays(pregStartDate, (win.eW * 7) - 1);
+                return { ...win, start, end };
+            }).filter(win => win.end > filterBaseDate);
+
+            const groups = {
+                '1구간': { title: '[1구간 - 4주 주기]', desc: '28주까지, 4주마다 1회', items: [] },
+                '2구간': { title: '[2구간 - 2주 주기]', desc: '29주~36주, 2주마다 1회', items: [] },
+                '3구간': { title: '[3구간 - 1주 주기]', desc: '37주부터, 1주마다 1회', items: [] }
+            };
+
+            futureCheckups.forEach(item => {
+                groups[item.label].items.push(item);
+            });
+
+            let listHtml = '';
+            Object.values(groups).forEach(group => {
+                if (group.items.length > 0) {
+                    listHtml += `
+                        <div class="checkup-group">
+                            <div class="group-header">
+                                <span class="group-title">${group.title}</span>
+                                <span class="group-desc">${group.desc}</span>
+                            </div>
+                            ${group.items.map(it => `
+                                <div class="schedule-item-new">
+                                    <span class="check-icon">✅</span>
+                                    <div class="schedule-info">
+                                        <span class="date-range">${DateUtils.formatCompact(it.start)} ~ ${DateUtils.formatCompact(it.end)} 사이 1회</span>
+                                        <span class="week-desc">(${it.sW}주~${it.eW}주차 권장)</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+            });
+
+            const statusBox = $("checkupResult");
+            if (statusBox) {
+                statusBox.innerHTML = `
+                    <div class="week-status-banner">
+                        <span style="font-size: 1.8em;">🏥</span>
+                        <div class="week-status-text">
+                            현재 <strong>${currentWeek}주차</strong>시군요!<br>앞으로의 검진휴가 일정을 안내해 드릴게요.
+                        </div>
+                    </div>
+                `;
+                statusBox.classList.add('show');
+            }
+
+            const container = $("checkupSchedule");
+            if (container) {
+                container.innerHTML = `
+                    <div class="checkup-summary-box">
+                        <div class="summary-text">총 <strong>${futureCheckups.length}회</strong> 사용 가능해요! <small>(연간 최대 10회 한도 내)</small></div>
+                    </div>
+                    ${listHtml}
+                `;
+                container.classList.add('show');
+            }
+        }
+
+        // 3. Work Hour Reduction
+        function calculateWorkHourReduction() {
+            const dueVal = $("workHourDueDate").value;
+            const risk = $("highRisk").value === 'yes';
+
+            if (!dueVal) {
+                UI.showResult('workHourResult', 'error', '<div class="message">📝 출산 예정일을 입력해 주세요.</div>');
+                return;
+            }
+
+            const dueDate = new Date(dueVal);
+            const today = new Date();
+            today.setHours(0,0,0,0);
+
+            const pregnancyStart = DateUtils.addDays(dueDate, -280);
+            const earlyEnd = DateUtils.addDays(pregnancyStart, 84);
+            const lateStart = DateUtils.addDays(pregnancyStart, 218);
+
+            let msg = "";
+            let status = 'success';
+
+            if (risk) {
+                msg = "✅ 고위험 임산부로 진단받으신 경우, <strong>임신 전 기간 동안</strong> 근로시간 단축을 신청하실 수 있어요!";
+            } else {
+                const isEarly = today <= earlyEnd;
+                const isLate = today >= lateStart && today <= dueDate;
+                
+                if (isEarly || isLate) {
+                    msg = `✅ 현재 단축 근무 신청이 가능한 기간이에요!`;
+                } else {
+                    status = 'warning';
+                    msg = `⚠️ 현재는 법정 단축 근무 대상 기간이 아니에요. 아래의 대상 기간을 확인해 주세요.`;
+                }
+            }
+
+            const html = `
+                <div class="result-item"><span class="result-label">단축 시간</span><span class="result-value">1일 최대 2시간</span></div>
+                <div class="info-box" style="margin-top:20px; padding:15px; background:rgba(255,255,255,0.4);">
+                    <div style="font-weight:700; margin-bottom:10px; font-size:0.95em;">📅 사용 가능 기간 상세</div>
+                    <div class="result-item"><span class="result-label">초기 (12주 이내)</span><span class="result-value">${DateUtils.format(pregnancyStart)} ~ ${DateUtils.format(earlyEnd)}</span></div>
+                    <div class="result-item"><span class="result-label">후기 (31주 1일 이후)</span><span class="result-value">${DateUtils.format(lateStart)} ~ ${DateUtils.format(dueDate)}</span></div>
+                </div>
+                <div class="message">${msg}<br><br>💡 단축 시간은 1일 최대 2시간이며, 임금 삭감 없이 매일 단축하여 근무하실 수 있어요. <br>단축 시간은 상황에 따라 유동적으로 조절 가능해요!</div>
+            `;
+            UI.showResult('workHourResult', status, html);
+        }
+
+        // 4. Parental Leave
+        function calculateParentalLeave() {
+            const birthVal = $("childBirthDate").value;
+            const startVal = $("parentalLeaveStart").value;
+            const months = parseInt($("parentalLeaveDuration").value);
+
+            if (!birthVal || !startVal || isNaN(months)) {
+                UI.showResult('parentalResult', 'error', '<div class="message">📝 자녀 생년월일과 시작일, 사용 기간을 모두 입력해 주세요.</div>');
+                return;
+            }
+
+            const birthDate = new Date(birthVal);
+            const startDate = new Date(startVal);
+            const age = DateUtils.getAge(birthDate);
+
+            if (age > 8) {
+                UI.showResult('parentalResult', 'error', `<div class="message">❌ 자녀가 만 ${age}세예요. 육아휴직은 만 8세(또는 초등 2학년) 이하일 때만 가능해요.</div>`);
+                return;
+            }
+
+            const endDate = new Date(startDate);
+            endDate.setMonth(endDate.getMonth() + months);
+            endDate.setDate(endDate.getDate() - 1);
+
+            const html = `
+                <div class="result-item"><span class="result-label">자녀 나이</span><span class="result-value">만 ${age}세</span></div>
+                <div class="result-item"><span class="result-label">사용 기간</span><span class="result-value">${months}개월</span></div>
+                <div class="result-item"><span class="result-label">휴직 종료일</span><span class="result-value">${DateUtils.format(endDate)}</span></div>
+                <div class="result-item"><span class="result-label">복귀 예정일</span><span class="result-value">${DateUtils.format(DateUtils.addDays(endDate, 1))}</span></div>
+                <div class="message">✅ 신청 가능한 대상이에요. 최대 3회까지 분할 사용이 가능하니 HR팀과 상의해 보세요!</div>
+            `;
+            UI.showResult('parentalResult', 'success', html);
+        }
+
+        // 5. Parental Work Reduction
+        function calculateParentalWorkReduction() {
+            const age = parseInt($("childAge").value);
+            const usedMonths = parseInt($("usedParentalMonths").value);
+
+            if (isNaN(age)) {
+                UI.showResult('parentalWorkResult', 'error', '<div class="message">📝 자녀 나이를 입력해 주세요.</div>');
+                return;
+            }
+
+            if (age > 8) {
+                UI.showResult('parentalWorkResult', 'error', '<div class="message">❌ 육아기 근로시간 단축은 만 8세 이하 자녀가 대상이에요.</div>');
+                return;
+            }
+
+            const remainMonths = 12 - usedMonths + 12;
+
+            const html = `
+                <div class="result-item"><span class="result-label">단축 후 근무시간</span><span class="result-value">주 15~35시간</span></div>
+                <div class="result-item"><span class="result-label">최대 가능 기간</span><span class="result-value">최대 ${remainMonths}개월</span></div>
+                <div class="message">✅ 육아기 근로시간 단축 대상이에요! 육아휴직 미사용분은 단축 기간으로 합산하여 사용하실 수 있어요.</div>
+            `;
+            UI.showResult('parentalWorkResult', 'success', html);
+        }
+
+        // 6. Smart Protection Timeline
+        function generateSmartTimeline() {
+            const dueVal = $("smartDueDate").value;
+            if (!dueVal) {
+                UI.showResult('smartTimelineResult', 'error', '<div class="message">📝 자녀의 출산(예정)일을 입력해 주세요.</div>');
+                return;
+            }
+
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            const dueDate = new Date(dueVal);
+            const isAfterBirth = today > dueDate;
+            
+            const pregStart = DateUtils.addDays(dueDate, -280);
+            const preg12w = DateUtils.addDays(pregStart, 84);
+            const preg31w1d = DateUtils.addDays(pregStart, 218);
+            const childAge8 = DateUtils.addYears(dueDate, 8);
+
+            let currentStatus = isAfterBirth ? "🌻 지금은 든든한 육아기예요!" : "🌱 지금은 소중한 임신기예요!";
+            let currentDesc = isAfterBirth 
+                ? `우리 아이가 태어난 지 벌써 <strong>만 ${DateUtils.getAge(dueDate)}세</strong>가 되었네요. 사용할 수 있는 육아기 제도들을 확인해 볼까요?`
+                : `출산 예정일까지 <strong>약 ${DateUtils.diffDays(today, dueDate)}일</strong> 남았어요. 건강 관리에 유의하며 아래 제도들을 활용해 보세요!`;
+
+            const summaryHtml = `
+                <div class="result-item"><span class="result-label">현재 상태</span><span class="result-value">${currentStatus}</span></div>
+                <div class="message">${currentDesc}</div>
+            `;
+            UI.showResult('smartTimelineResult', 'success', summaryHtml);
+
+            const steps = [
+                {
+                    title: "임신기 근로시간 단축 (초기)",
+                    date: `${DateUtils.format(pregStart)} ~ ${DateUtils.format(preg12w)}`,
+                    desc: "임신 12주 이내에는 하루 2시간씩 단축 근무를 할 수 있어요.",
+                    color: "#ff9eb5",
+                    active: !isAfterBirth && today <= preg12w,
+                    targetPage: "workhour"
+                },
+                {
+                    title: "태아검진 휴가",
+                    date: `${DateUtils.format(pregStart)} ~ ${DateUtils.format(dueDate)}`,
+                    desc: "임신 주차에 따라 정기적으로 유급 검진 휴가를 사용할 수 있어요.",
+                    color: "#7ec8e8",
+                    active: !isAfterBirth && today > pregStart && today <= dueDate,
+                    targetPage: "checkup"
+                },
+                {
+                    title: "임신기 근로시간 단축 (후기)",
+                    date: `${DateUtils.format(preg31w1d)} ~ ${DateUtils.format(dueDate)}`,
+                    desc: "임신 31주 1일 이후부터 출산 전까지 하루 2시간 단축 근무가 가능해요.",
+                    color: "#c8a8e8",
+                    active: !isAfterBirth && today >= preg31w1d && today <= dueDate,
+                    targetPage: "workhour"
+                },
+                {
+                    title: "출산전후휴가",
+                    date: `${DateUtils.format(dueDate)} 전후 (총 90일)`,
+                    desc: "출산 전후로 충분한 휴식을 위해 90일(다태아 120일)의 휴가를 사용할 수 있어요.",
+                    color: "#ffb8d0",
+                    active: isAfterBirth && DateUtils.diffDays(dueDate, today) <= 90,
+                    targetPage: "maternity"
+                },
+                {
+                    title: "육아휴직 & 육아기 단축근무",
+                    date: `출산 후 ~ ${DateUtils.format(childAge8)}`,
+                    desc: "자녀가 만 8세(또는 초등 2학년)가 될 때까지 육아휴직과 단축근무를 활용할 수 있어요.",
+                    color: "#ffe8a0",
+                    active: isAfterBirth && today <= childAge8,
+                    targetPage: "parental"
+                }
+            ];
+
+            const timelineContainer = $("smartTimelineContainer");
+            if (timelineContainer) {
+                timelineContainer.innerHTML = steps.map(step => `
+                    <div class="timeline-step ${step.active ? 'active' : ''}" style="--dot-color: ${step.color}">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-info">
+                                <div class="timeline-step-title">${step.title} ${step.active ? '<small>(현재 진행 중 ✨)</small>' : ''}</div>
+                                <div class="timeline-step-date">${step.date}</div>
+                                <div class="timeline-step-desc">${step.desc}</div>
+                            </div>
+                            <button class="shortcut-btn" onclick="showPage('${step.targetPage}')">
+                                바로가기 ➔
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+                timelineContainer.classList.add('show');
+            }
+        }
+
+        // --- Initialization & Event Binding ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Menu navigation
+            document.querySelectorAll('.menu-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const page = card.dataset.page;
+                    if (page) showPage(page);
+                });
+            });
+
+            // Back buttons
+            document.querySelectorAll('.back-button').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const page = btn.dataset.page;
+                    if (page) {
+                        UI.hideResults();
+                        showPage(page);
+                    }
+                });
+            });
+
+            // Calculators
+            $('btnCalculateMaternity')?.addEventListener('click', calculateMaternityLeave);
+            $('btnCalculateCheckup')?.addEventListener('click', calculateCheckupLeave);
+            $('btnCalculateWorkHour')?.addEventListener('click', calculateWorkHourReduction);
+            $('btnCalculateParental')?.addEventListener('click', calculateParentalLeave);
+            $('btnCalculateParentalWork')?.addEventListener('click', calculateParentalWorkReduction);
+            $('btnGenerateSmartTimeline')?.addEventListener('click', generateSmartTimeline);
+        });
+    </script>
+</body>
+</html>
