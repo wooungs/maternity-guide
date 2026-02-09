@@ -70,6 +70,39 @@
         .landing-subtitle { font-size: clamp(1em, 2.5vw, 1.3em); color: var(--text-secondary); font-weight: 400; line-height: 1.8; max-width: 900px; margin: 0 auto; white-space: nowrap; }
         .landing-subtitle .highlight { color: #d899b8; font-weight: 600; }
         
+        .landing-cta-container {
+            margin: 40px 0 16px;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+        .guide-cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 40px;
+            background: linear-gradient(135deg, #7ec8e8 0%, #c8a8e8 50%, #ff9eb5 100%);
+            background-size: 200% 200%;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1em;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 24px rgba(200, 168, 232, 0.3);
+            animation: gradientShift 5s ease infinite;
+        }
+        .guide-cta-button:hover {
+            transform: translateY(-5px);
+            background-position: 100% 50%;
+            box-shadow: 0 15px 35px rgba(200, 168, 232, 0.4);
+            border-color: rgba(255, 255, 255, 0.8);
+        }
+        .guide-cta-button .icon {
+            font-size: 1.2em;
+        }
+
         .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; max-width: 1200px; width: 100%; padding: 0 20px; }
         .menu-card { background: rgba(255, 255, 255, 0.85); border-radius: 28px; padding: 32px 28px 100px; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(100, 100, 140, 0.08); min-height: 240px; border: none; text-align: left; font-family: inherit; width: 100%; }
         .menu-card:hover, .menu-card:focus { transform: translateY(-8px); box-shadow: 0 16px 40px rgba(100, 100, 140, 0.15); outline: none; }
@@ -130,14 +163,40 @@
         
         .form-group { margin-bottom: 24px; }
         .form-group label { display: block; font-size: 0.95em; font-weight: 600; color: var(--text-secondary); margin-bottom: 10px; }
-        .form-group input, .form-group select { width: 100%; padding: 16px 20px; background: rgba(255, 255, 255, 0.5); border: 2px solid rgba(255, 255, 255, 0.4); border-radius: 16px; font-size: 1em; font-weight: 500; color: var(--text-primary); transition: all 0.3s ease; font-family: inherit; }
+        
+        .date-select-group {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .form-group input, .form-group select { 
+            width: 100%; 
+            padding: 16px 20px; 
+            background: rgba(255, 255, 255, 0.5); 
+            border: 2px solid rgba(255, 255, 255, 0.4); 
+            border-radius: 16px; 
+            font-size: 1em; 
+            font-weight: 500; 
+            color: var(--text-primary); 
+            transition: all 0.3s ease; 
+            font-family: inherit;
+            appearance: none;
+            cursor: pointer;
+        }
+        
+        select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%235a6779' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+            padding-right: 36px !important;
+        }
+        
         .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--focus-ring); background: rgba(255, 255, 255, 0.7); box-shadow: 0 0 0 4px rgba(200, 168, 232, 0.15); }
         
         .btn-calculate { width: 100%; padding: 18px; background: linear-gradient(135deg, #7ec8e8 0%, #c8a8e8 50%, #ff9eb5 100%); background-size: 200% 200%; color: white; border: none; border-radius: 16px; font-size: 1.1em; font-weight: 700; cursor: pointer; transition: all 0.4s ease; box-shadow: 0 8px 24px rgba(200, 168, 232, 0.3); font-family: inherit; }
         .btn-calculate:hover, .btn-calculate:focus { background-position: 100% 50%; transform: translateY(-3px); box-shadow: 0 12px 32px rgba(200, 168, 232, 0.4); outline: none; }
-        
-        .btn-copy { margin-top: 16px; padding: 12px 20px; background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(255, 255, 255, 0.8); border-radius: 12px; font-size: 0.9em; font-weight: 600; color: var(--text-secondary); cursor: pointer; transition: all 0.3s ease; }
-        .btn-copy:hover { background: rgba(255, 255, 255, 0.8); color: var(--text-primary); }
         
         .result-box { margin-top: 28px; padding: 28px; background: rgba(255, 255, 255, 0.5); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.5); display: none; }
         .result-box.show { display: block; animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
@@ -277,8 +336,43 @@
 
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(126, 200, 232, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(126, 200, 232, 0); } 100% { box-shadow: 0 0 0 0 rgba(126, 200, 232, 0); } }
 
-        .landing-footer { margin-top: 60px; text-align: center; color: var(--text-secondary); font-size: 0.9em; opacity: 0.7; padding-bottom: 40px; line-height: 1.6; }
+        .landing-footer { margin-top: 16px; text-align: center; color: var(--text-secondary); font-size: 0.9em; opacity: 0.7; padding-bottom: 40px; line-height: 1.6; }
         .version-badge { display: inline-block; margin-top: 10px; padding: 4px 12px; background: rgba(0, 0, 0, 0.05); border-radius: 50px; font-size: 0.8em; font-weight: 600; }
+
+        .btn-copy {
+            margin-top: 16px;
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            font-size: 0.9em;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        .btn-copy:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-2px);
+        }
+
+        .schedule-container {
+            display: none;
+        }
+        .schedule-container.show {
+            display: block;
+            animation: slideUp 0.4s ease;
+        }
+
+        .week-status-container {
+            display: none;
+        }
+        .week-status-container.show {
+            display: block;
+            animation: slideUp 0.4s ease;
+        }
 
         @media (max-width: 1024px) {
             .landing-subtitle { white-space: normal; }
@@ -289,6 +383,7 @@
             .glass-card { padding: 24px 20px; }
             .timeline-content { flex-direction: column; }
             .shortcut-btn { align-self: flex-end; }
+            .date-select-group { grid-template-columns: 1fr; gap: 8px; }
         }
     </style>
 </head>
@@ -309,22 +404,34 @@
             </header>
             
             <nav class="menu-grid">
-                <button class="menu-card pink" data-page="maternity" aria-label="출산전후휴가 계산기 이동">
-                    <span class="menu-card-badge">출산전후휴가</span>
-                    <p class="menu-card-desc">출산 예정일에 맞춰 <span class="highlight">휴가 시작일</span>과<br><span class="highlight">복귀일</span>을 계산해 드려요!</p>
-                    <div class="menu-icon">🤰</div>
+                <button class="menu-card blue" data-page="timeline" aria-label="모성보호 한눈에 확인하기 이동">
+                    <span class="menu-card-badge">모성보호 한눈에 확인하기</span>
+                    <p class="menu-card-desc">내 <span class="highlight">일정에 맞춰</span> 신청가능한<br><span class="highlight">제도들을 확인해보세요!</span></p>
+                    <div class="menu-icon">📅</div>
                 </button>
-                
+
+                <button class="menu-card purple" data-page="workhour" aria-label="임신기 근로시간 단축 확인 이동">
+                    <span class="menu-card-badge">임신기 근로시간 단축</span>
+                    <p class="menu-card-desc">임신 중 <span class="highlight">근로시간 단축</span> 대상 여부,<br>함께 <span class="highlight">확인해보세요!</span></p>
+                    <div class="menu-icon">⏰</div>
+                </button>
+
                 <button class="menu-card blue" data-page="checkup" aria-label="태아검진휴가 일정 확인 이동">
                     <span class="menu-card-badge">태아검진휴가</span>
                     <p class="menu-card-desc">임신 주차별 <span class="highlight">검진 주기</span>와<br><span class="highlight">남은 휴가 일수</span>를 확인하세요!</p>
                     <div class="menu-icon">🏥</div>
                 </button>
-                
-                <button class="menu-card purple" data-page="workhour" aria-label="임신기 근로시간 단축 확인 이동">
-                    <span class="menu-card-badge">임신기 근로시간 단축</span>
-                    <p class="menu-card-desc">임신 중 <span class="highlight">근로시간 단축</span> 대상 여부,<br>함께 <span class="highlight">확인해보세요!</span></p>
-                    <div class="menu-icon">⏰</div>
+
+                <button class="menu-card pink" data-page="maternity" aria-label="출산전후휴가 계산기 이동">
+                    <span class="menu-card-badge">출산전후휴가</span>
+                    <p class="menu-card-desc">출산 예정일에 맞춰 <span class="highlight">휴가 시작일</span>과<br><span class="highlight">복귀일</span>을 계산해 드려요!</p>
+                    <div class="menu-icon">🤰</div>
+                </button>
+
+                <button class="menu-card pink" data-page="parentalwork" aria-label="육아기 근로시간 단축 확인 이동">
+                    <span class="menu-card-badge">육아기 근로시간 단축</span>
+                    <p class="menu-card-desc">육아기 <span class="highlight">근로시간 단축</span> 사용 가능 여부,<br><span class="highlight">확인해보세요!</span></p>
+                    <div class="menu-icon">🕐</div>
                 </button>
                 
                 <button class="menu-card yellow" data-page="parental" aria-label="육아휴직 계산기 이동">
@@ -332,19 +439,13 @@
                     <p class="menu-card-desc">육아휴직을 <span class="highlight">희망하실 경우</span>,<br>사용 가능한 <span class="highlight">일정을 확인해보세요!</span></p>
                     <div class="menu-icon">👶</div>
                 </button>
-                
-                <button class="menu-card pink" data-page="parentalwork" aria-label="육아기 근로시간 단축 확인 이동">
-                    <span class="menu-card-badge">육아기 근로시간 단축</span>
-                    <p class="menu-card-desc">육아기 <span class="highlight">근로시간 단축</span> 사용 가능 여부,<br><span class="highlight">확인해보세요!</span></p>
-                    <div class="menu-icon">🕐</div>
-                </button>
-                
-                <button class="menu-card blue" data-page="timeline" aria-label="모성보호 한눈에 확인하기 이동">
-                    <span class="menu-card-badge">모성보호 한눈에 확인하기</span>
-                    <p class="menu-card-desc">내 <span class="highlight">일정에 맞춰</span> 신청가능한<br><span class="highlight">제도들을 확인해보세요!</span></p>
-                    <div class="menu-icon">📅</div>
-                </button>
             </nav>
+
+            <div class="landing-cta-container">
+                <a href="https://www.notion.so/supercent/2ca93b2d2573804bac6fd3f047892a0f?source=copy_link" target="_blank" class="guide-cta-button">
+                    <span class="icon">📖</span> 모성보호 가이드 바로가기
+                </a>
+            </div>
             
             <footer class="landing-footer">
                 이외에 추가적인 문의사항이 있으시다면 편하게 HR팀으로 문의주세요!<br>
@@ -368,8 +469,22 @@
                 <div class="info-item"><span class="info-label">다태아</span><span class="info-value">총 120일 (출산 후 <strong>60일 이상</strong> 필수)</span></div>
             </div>
             <div class="glass-card pink">
-                <div class="form-group"><label for="maternityDueDate">출산 예정일</label><input type="date" id="maternityDueDate" required></div>
-                <div class="form-group"><label for="maternityStartDate">희망 시작일</label><input type="date" id="maternityStartDate" required></div>
+                <div class="form-group">
+                    <label>출산 예정일</label>
+                    <div class="date-select-group" data-id="maternityDueDate">
+                        <select class="year-select" aria-label="연도 선택"></select>
+                        <select class="month-select" aria-label="월 선택"></select>
+                        <select class="day-select" aria-label="일 선택"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>희망 시작일</label>
+                    <div class="date-select-group" data-id="maternityStartDate">
+                        <select class="year-select" aria-label="연도 선택"></select>
+                        <select class="month-select" aria-label="월 선택"></select>
+                        <select class="day-select" aria-label="일 선택"></select>
+                    </div>
+                </div>
                 <div class="form-group"><label for="birthType">출산 형태</label><select id="birthType"><option value="single">단태아</option><option value="multiple">다태아 (쌍둥이 이상)</option></select></div>
                 <button class="btn-calculate" id="btnCalculateMaternity">계산하기</button>
                 <div id="maternityResult" class="result-box" aria-live="polite"></div>
@@ -392,8 +507,22 @@
                 <div class="info-item"><span class="info-label">37주~</span><span class="info-value">1주마다 1회</span></div>
             </div>
             <div class="glass-card blue">
-                <div class="form-group"><label for="checkupDueDate">출산 예정일</label><input type="date" id="checkupDueDate" required></div>
-                <div class="form-group"><label for="lastCheckupDate">최근 검진 사용일 (선택)</label><input type="date" id="lastCheckupDate"></div>
+                <div class="form-group">
+                    <label>출산 예정일</label>
+                    <div class="date-select-group" data-id="checkupDueDate">
+                        <select class="year-select" aria-label="연도 선택"></select>
+                        <select class="month-select" aria-label="월 선택"></select>
+                        <select class="day-select" aria-label="일 선택"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>최근 검진 사용일 (선택)</label>
+                    <div class="date-select-group" data-id="lastCheckupDate">
+                        <select class="year-select" aria-label="연도 선택"><option value="">선택 안함</option></select>
+                        <select class="month-select" aria-label="월 선택"></select>
+                        <select class="day-select" aria-label="일 선택"></select>
+                    </div>
+                </div>
                 <button class="btn-calculate" id="btnCalculateCheckup">일정 계산하기</button>
                 <div id="checkupResult" class="week-status-container" aria-live="polite"></div>
                 <div id="checkupSchedule" class="schedule-container" style="margin-top:24px;"></div>
@@ -410,7 +539,14 @@
                 <p class="calc-subtitle-small">임신 중 근로시간 단축 대상 여부와 사용 가능한 기간을 확인해보세요!</p>
             </div>
             <div class="glass-card purple">
-                <div class="form-group"><label for="workHourDueDate">출산 예정일</label><input type="date" id="workHourDueDate" required></div>
+                <div class="form-group">
+                    <label>출산 예정일</label>
+                    <div class="date-select-group" data-id="workHourDueDate">
+                        <select class="year-select" aria-label="연도 선택"></select>
+                        <select class="month-select" aria-label="월 선택"></select>
+                        <select class="day-select" aria-label="일 선택"></select>
+                    </div>
+                </div>
                 <div class="form-group"><label for="highRisk">고위험 임산부 여부</label><select id="highRisk"><option value="no">아니요</option><option value="yes">예 (진단서 보유)</option></select></div>
                 <button class="btn-calculate" id="btnCalculateWorkHour">사용 가능 기간 확인</button>
                 <div id="workHourResult" class="result-box" aria-live="polite"></div>
@@ -424,11 +560,31 @@
             <div class="calc-header">
                 <div class="calc-icon">👶</div>
                 <h2 class="calc-title">육아휴직</h2>
-                <p class="calc-subtitle-small">육아휴직 기간과 부모육아휴직 혜택을 안내해 드려요!</p>
+                <p class="calc-subtitle-small">육아휴직 기간과 신청 가능한 기준을 안내해 드려요!</p>
+            </div>
+            <div class="info-box">
+                <h3 class="info-box-title">📋 육아휴직 기준</h3>
+                <div class="info-item"><span class="info-label">대상 자녀</span><span class="info-value">만 12세 이하 또는 초등 6학년 이하</span></div>
+                <div class="info-item"><span class="info-label">사용 기간</span><span class="info-value">자녀 1명당 최대 1년</span></div>
+                <div class="info-item"><span class="info-label">분할 사용</span><span class="info-value">최대 3회까지 나누어 사용 가능</span></div>
             </div>
             <div class="glass-card yellow">
-                <div class="form-group"><label for="childBirthDate">자녀 생년월일</label><input type="date" id="childBirthDate" required></div>
-                <div class="form-group"><label for="parentalLeaveStart">희망 시작일</label><input type="date" id="parentalLeaveStart" required></div>
+                <div class="form-group">
+                    <label>자녀 생년월일</label>
+                    <div class="date-select-group" data-id="childBirthDate">
+                        <select class="year-select" aria-label="연도 선택"></select>
+                        <select class="month-select" aria-label="월 선택"></select>
+                        <select class="day-select" aria-label="일 선택"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>희망 시작일</label>
+                    <div class="date-select-group" data-id="parentalLeaveStart">
+                        <select class="year-select" aria-label="연도 선택"></select>
+                        <select class="month-select" aria-label="월 선택"></select>
+                        <select class="day-select" aria-label="일 선택"></select>
+                    </div>
+                </div>
                 <div class="form-group"><label for="parentalLeaveDuration">사용 기간 (개월)</label><input type="number" id="parentalLeaveDuration" value="12" min="1" max="12"></div>
                 <button class="btn-calculate" id="btnCalculateParental">계산하기</button>
                 <div id="parentalResult" class="result-box" aria-live="polite"></div>
@@ -443,6 +599,11 @@
                 <div class="calc-icon">🕐</div>
                 <h2 class="calc-title">육아기 근로시간 단축</h2>
                 <p class="calc-subtitle-small">육아기 근로시간 단축 사용 가능 여부, 확인해보세요!</p>
+            </div>
+            <div class="info-box">
+                <h3 class="info-box-title">📋 단축근무 기준</h3>
+                <div class="info-item"><span class="info-label">대상 자녀</span><span class="info-value">만 12세 이하 또는 초등 6학년 이하</span></div>
+                <div class="info-item"><span class="info-label">단축 시간</span><span class="info-value">주 15시간 이상 35시간 이하</span></div>
             </div>
             <div class="glass-card pink">
                 <div class="form-group"><label for="childAge">자녀 나이 (만)</label><input type="number" id="childAge" min="0" max="12" placeholder="0~12"></div>
@@ -462,7 +623,14 @@
                 <p class="calc-subtitle-small">내 일정에 맞춰 신청가능한 제도들을 확인해보세요!</p>
             </div>
             <div class="glass-card blue">
-                <div class="form-group"><label for="smartDueDate">자녀의 출산(예정)일</label><input type="date" id="smartDueDate" required></div>
+                <div class="form-group">
+                    <label>자녀의 출산(예정)일</label>
+                    <div class="date-select-group" data-id="smartDueDate">
+                        <select class="year-select" aria-label="연도 선택"></select>
+                        <select class="month-select" aria-label="월 선택"></select>
+                        <select class="day-select" aria-label="일 선택"></select>
+                    </div>
+                </div>
                 <button class="btn-calculate" id="btnGenerateSmartTimeline">타임라인 확인하기</button>
                 
                 <div id="smartTimelineResult" class="result-box" aria-live="polite"></div>
@@ -472,7 +640,7 @@
     </section>
 
     <script>
-        // --- Utilities ---
+        // Utilities
         const $ = (id) => document.getElementById(id);
 
         const DateUtils = {
@@ -505,6 +673,105 @@
                 const m = referenceDate.getMonth() - birthDate.getMonth();
                 if (m < 0 || (m === 0 && referenceDate.getDate() < birthDate.getDate())) age--;
                 return age;
+            },
+            getDaysInMonth(year, month) {
+                return new Date(year, month, 0).getDate();
+            }
+        };
+
+        const DateSelect = {
+            init(groupId, defaultDate = new Date()) {
+                const group = document.querySelector(`.date-select-group[data-id="${groupId}"]`);
+                if (!group) return;
+
+                const yearSelect = group.querySelector('.year-select');
+                const monthSelect = group.querySelector('.month-select');
+                const daySelect = group.querySelector('.day-select');
+
+                const currentYear = new Date().getFullYear();
+                const isOptional = yearSelect.querySelector('option[value=""]') !== null;
+
+                const startYear = currentYear - 15;
+                const endYear = currentYear + 15;
+
+                const originalFirstOption = isOptional ? yearSelect.firstElementChild : null;
+                yearSelect.innerHTML = '';
+                if (originalFirstOption) yearSelect.appendChild(originalFirstOption);
+                
+                for (let y = endYear; y >= startYear; y--) {
+                    const opt = document.createElement('option');
+                    opt.value = y.toString();
+                    opt.textContent = `${y}년`;
+                    if (!isOptional && y === defaultDate.getFullYear()) opt.selected = true;
+                    yearSelect.appendChild(opt);
+                }
+
+                monthSelect.innerHTML = '';
+                for (let m = 1; m <= 12; m++) {
+                    const opt = document.createElement('option');
+                    opt.value = m.toString();
+                    opt.textContent = `${m}월`;
+                    if (!isOptional && m === (defaultDate.getMonth() + 1)) opt.selected = true;
+                    monthSelect.appendChild(opt);
+                }
+
+                const updateDays = () => {
+                    const year = parseInt(yearSelect.value);
+                    const month = parseInt(monthSelect.value);
+                    if (isNaN(year) || isNaN(month)) {
+                        daySelect.innerHTML = '<option value="">-</option>';
+                        return;
+                    }
+                    
+                    const daysInMonth = DateUtils.getDaysInMonth(year, month);
+                    const currentDay = parseInt(daySelect.value) || defaultDate.getDate();
+                    
+                    daySelect.innerHTML = '';
+                    for (let d = 1; d <= daysInMonth; d++) {
+                        const opt = document.createElement('option');
+                        opt.value = d.toString();
+                        opt.textContent = `${d}일`;
+                        if (!isOptional && d === currentDay) opt.selected = true;
+                        daySelect.appendChild(opt);
+                    }
+                    if (currentDay > daysInMonth) {
+                        daySelect.value = daysInMonth.toString();
+                    } else if (!daySelect.value && !isOptional) {
+                        daySelect.value = "1";
+                    }
+                };
+
+                yearSelect.addEventListener('change', updateDays);
+                monthSelect.addEventListener('change', updateDays);
+
+                updateDays();
+                
+                if (isOptional) {
+                    yearSelect.addEventListener('change', () => {
+                        if (yearSelect.value === "") {
+                            monthSelect.disabled = true;
+                            daySelect.disabled = true;
+                        } else {
+                            monthSelect.disabled = false;
+                            daySelect.disabled = false;
+                            updateDays();
+                        }
+                    });
+                    monthSelect.disabled = true;
+                    daySelect.disabled = true;
+                }
+            },
+
+            getValue(groupId) {
+                const group = document.querySelector(`.date-select-group[data-id="${groupId}"]`);
+                if (!group) return "";
+
+                const y = group.querySelector('.year-select').value;
+                const m = group.querySelector('.month-select').value;
+                const d = group.querySelector('.day-select').value;
+
+                if (!y || !m || !d) return "";
+                return `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
             }
         };
 
@@ -525,7 +792,6 @@
             }
         };
 
-        // --- Page Navigation ---
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             const target = $(pageId);
@@ -537,16 +803,13 @@
             }
         }
 
-        // --- Calculation Logic ---
-
-        // 1. Maternity Leave
         function calculateMaternityLeave() {
-            const dueVal = $("maternityDueDate").value;
-            const startVal = $("maternityStartDate").value;
+            const dueVal = DateSelect.getValue("maternityDueDate");
+            const startVal = DateSelect.getValue("maternityStartDate");
             const type = $("birthType").value;
 
             if (!dueVal || !startVal) {
-                UI.showResult('maternityResult', 'error', '<div class="message">📝 출산 예정일과 휴가 시작일을 모두 입력해 주세요.</div>');
+                UI.showResult('maternityResult', 'error', '<div class="message">📝 출산 예정일과 휴가 시작일을 모두 선택해 주세요.</div>');
                 return;
             }
 
@@ -573,29 +836,24 @@
                 msg = '⚠️ 휴가 시작일이 출산 예정일보다 늦어요. 출산 전 건강 관리에 꼭 유의하세요!';
             }
 
-            const startFormatted = DateUtils.format(startDate);
-            const endFormatted = DateUtils.format(endDate);
-            const returnFormatted = DateUtils.format(returnDate);
-
             const html = `
                 <div class="result-item"><span class="result-label">총 휴가 기간</span><span class="result-value">${totalDays}일</span></div>
                 <div class="result-item"><span class="result-label">출산 전 / 후</span><span class="result-value">${preDays}일 / ${postDays}일</span></div>
-                <div class="result-item"><span class="result-label">휴가 종료일</span><span class="result-value">${endFormatted}</span></div>
-                <div class="result-item"><span class="result-label">복귀 예정일</span><span class="result-value">${returnFormatted}</span></div>
+                <div class="result-item"><span class="result-label">휴가 종료일</span><span class="result-value">${DateUtils.format(endDate)}</span></div>
+                <div class="result-item"><span class="result-label">복귀 예정일</span><span class="result-value">${DateUtils.format(returnDate)}</span></div>
                 <div class="message">${msg}</div>
-                <button class="btn-copy" onclick="navigator.clipboard.writeText('출산휴가 계획: ${startFormatted} ~ ${endFormatted} (복귀: ${returnFormatted})').then(()=>alert('클립보드에 복사되었어요!'))">결과 복사하기</button>
+                <button class="btn-copy" onclick="navigator.clipboard.writeText('출산휴가 계획: ${DateUtils.format(startDate)} ~ ${DateUtils.format(endDate)} (복귀: ${DateUtils.format(returnDate)})').then(()=>alert('클립보드에 복사되었어요!'))">결과 복사하기</button>
             `;
             UI.showResult('maternityResult', status, html);
         }
 
-        // 2. Checkup Leave
         function calculateCheckupLeave() {
-            const dueVal = $("checkupDueDate").value;
-            const lastVal = $("lastCheckupDate").value;
+            const dueVal = DateSelect.getValue("checkupDueDate");
+            const lastVal = DateSelect.getValue("lastCheckupDate");
 
             if (!dueVal) {
                 const resBox = $("checkupResult");
-                if(resBox) resBox.innerHTML = '<div class="message" style="color:#e53e3e">📝 출산 예정일을 입력해 주세요.</div>';
+                if(resBox) resBox.innerHTML = '<div class="message" style="color:#e53e3e">📝 출산 예정일을 선택해 주세요.</div>';
                 return;
             }
 
@@ -690,13 +948,12 @@
             }
         }
 
-        // 3. Work Hour Reduction
         function calculateWorkHourReduction() {
-            const dueVal = $("workHourDueDate").value;
+            const dueVal = DateSelect.getValue("workHourDueDate");
             const risk = $("highRisk").value === 'yes';
 
             if (!dueVal) {
-                UI.showResult('workHourResult', 'error', '<div class="message">📝 출산 예정일을 입력해 주세요.</div>');
+                UI.showResult('workHourResult', 'error', '<div class="message">📝 출산 예정일을 선택해 주세요.</div>');
                 return;
             }
 
@@ -737,24 +994,22 @@
             UI.showResult('workHourResult', status, html);
         }
 
-        // 4. Parental Leave (변경됨: 시작일 기준 나이 계산)
         function calculateParentalLeave() {
-            const birthVal = $("childBirthDate").value;
-            const startVal = $("parentalLeaveStart").value;
+            const birthVal = DateSelect.getValue("childBirthDate");
+            const startVal = DateSelect.getValue("parentalLeaveStart");
             const months = parseInt($("parentalLeaveDuration").value);
 
             if (!birthVal || !startVal || isNaN(months)) {
-                UI.showResult('parentalResult', 'error', '<div class="message">📝 자녀 생년월일과 시작일, 사용 기간을 모두 입력해 주세요.</div>');
+                UI.showResult('parentalResult', 'error', '<div class="message">📝 자녀 생년월일과 시작일, 사용 기간을 모두 선택해 주세요.</div>');
                 return;
             }
 
             const birthDate = new Date(birthVal);
             const startDate = new Date(startVal);
-            // 자녀 나이 계산 기준을 '휴직 시작일'로 변경
             const ageAtStart = DateUtils.getAge(birthDate, startDate);
 
-            if (ageAtStart > 8) {
-                UI.showResult('parentalResult', 'error', `<div class="message">❌ 희망 시작일(${DateUtils.format(startDate)}) 기준 자녀가 만 ${ageAtStart}세가 됩니다. 육아휴직은 시작일 기준 만 8세(또는 초등 2학년) 이하일 때만 신청 가능해요.</div>`);
+            if (ageAtStart > 12) {
+                UI.showResult('parentalResult', 'error', `<div class="message">❌ 희망 시작일(${DateUtils.format(startDate)}) 기준 자녀가 만 ${ageAtStart}세가 됩니다. 육아휴직은 시작일 기준 만 12세(또는 초등 6학년) 이하일 때만 신청 가능해요.</div>`);
                 return;
             }
 
@@ -772,7 +1027,6 @@
             UI.showResult('parentalResult', 'success', html);
         }
 
-        // 5. Parental Work Reduction
         function calculateParentalWorkReduction() {
             const age = parseInt($("childAge").value);
             const usedMonths = parseInt($("usedParentalMonths").value);
@@ -782,8 +1036,8 @@
                 return;
             }
 
-            if (age > 8) {
-                UI.showResult('parentalWorkResult', 'error', '<div class="message">❌ 육아기 근로시간 단축은 만 8세 이하 자녀가 대상이에요.</div>');
+            if (age > 12) {
+                UI.showResult('parentalWorkResult', 'error', '<div class="message">❌ 육아기 근로시간 단축은 만 12세 이하 자녀가 대상이에요.</div>');
                 return;
             }
 
@@ -797,11 +1051,10 @@
             UI.showResult('parentalWorkResult', 'success', html);
         }
 
-        // 6. Smart Protection Timeline (변경됨: referenceDate 파라미터 적용)
         function generateSmartTimeline() {
-            const dueVal = $("smartDueDate").value;
+            const dueVal = DateSelect.getValue("smartDueDate");
             if (!dueVal) {
-                UI.showResult('smartTimelineResult', 'error', '<div class="message">📝 자녀의 출산(예정)일을 입력해 주세요.</div>');
+                UI.showResult('smartTimelineResult', 'error', '<div class="message">📝 자녀의 출산(예정)일을 선택해 주세요.</div>');
                 return;
             }
 
@@ -813,7 +1066,7 @@
             const pregStart = DateUtils.addDays(dueDate, -280);
             const preg12w = DateUtils.addDays(pregStart, 84);
             const preg31w1d = DateUtils.addDays(pregStart, 218);
-            const childAge8 = DateUtils.addYears(dueDate, 8);
+            const childAge12 = DateUtils.addYears(dueDate, 12);
 
             let currentStatus = isAfterBirth ? "🌻 지금은 든든한 육아기예요!" : "🌱 지금은 소중한 임신기예요!";
             let currentDesc = isAfterBirth 
@@ -861,10 +1114,10 @@
                 },
                 {
                     title: "육아휴직 & 육아기 단축근무",
-                    date: `출산 후 ~ ${DateUtils.format(childAge8)}`,
-                    desc: "자녀가 만 8세(또는 초등 2학년)가 될 때까지 육아휴직과 단축근무를 활용할 수 있어요.",
+                    date: `출산 후 ~ ${DateUtils.format(childAge12)}`,
+                    desc: "자녀가 만 12세(또는 초등 6학년)가 될 때까지 육아휴직과 단축근무를 활용할 수 있어요.",
                     color: "#ffe8a0",
-                    active: isAfterBirth && today <= childAge8,
+                    active: isAfterBirth && today <= childAge12,
                     targetPage: "parental"
                 }
             ];
@@ -890,9 +1143,8 @@
             }
         }
 
-        // --- Initialization & Event Binding ---
+        // Initialization
         document.addEventListener('DOMContentLoaded', () => {
-            // Menu navigation
             document.querySelectorAll('.menu-card').forEach(card => {
                 card.addEventListener('click', () => {
                     const page = card.dataset.page;
@@ -900,7 +1152,6 @@
                 });
             });
 
-            // Back buttons
             document.querySelectorAll('.back-button').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const page = btn.dataset.page;
@@ -911,7 +1162,15 @@
                 });
             });
 
-            // Calculators
+            DateSelect.init("maternityDueDate");
+            DateSelect.init("maternityStartDate");
+            DateSelect.init("checkupDueDate");
+            DateSelect.init("lastCheckupDate");
+            DateSelect.init("workHourDueDate");
+            DateSelect.init("childBirthDate");
+            DateSelect.init("parentalLeaveStart");
+            DateSelect.init("smartDueDate");
+
             $('btnCalculateMaternity')?.addEventListener('click', calculateMaternityLeave);
             $('btnCalculateCheckup')?.addEventListener('click', calculateCheckupLeave);
             $('btnCalculateWorkHour')?.addEventListener('click', calculateWorkHourReduction);
